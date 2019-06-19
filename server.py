@@ -21,7 +21,6 @@ def hello(environ, start_response):
         request_body_size = 0
     request_body = environ['wsgi.input'].read(request_body_size)
     d = parse_qs(request_body.decode('utf-8'))
-    print(d)
     name = d.get('name', [''])[0]
     phone = d.get('phone', [''])[0]
     with open('./templates/name_phone.html') as template_file:
