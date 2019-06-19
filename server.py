@@ -49,7 +49,7 @@ def application(environ, start_response):
         match = re.search(regex, path)
         if match is not None:
             return callback(environ, start_response)
-        return not_found(environ, start_response)
+    return not_found(environ, start_response)
 
 
 httpd = make_server('', 8123, application)
