@@ -7,7 +7,7 @@ from string import Template
 def index(environ, start_response):
 
     start_response('200 OK', [('Content-Type', 'text/html')])
-    with open('/Volumes/FlashDrive/PyCharm/training/wsgi_server/templates/index_page.html') as template_file:
+    with open('./templates/index_page.html') as template_file:
         template = Template(template_file.read())
 
     return [bytes(template.substitute(), encoding='utf-8')]
@@ -24,7 +24,7 @@ def hello(environ, start_response):
     print(d)
     name = d.get('name', [''])[0]
     phone = d.get('phone', [''])[0]
-    with open('/Volumes/FlashDrive/PyCharm/training/wsgi_server/templates/name_phone.html') as template_file:
+    with open('./templates/name_phone.html') as template_file:
         template = Template(template_file.read())
     return [bytes(template.substitute({
         'name': name or 'Empty',
