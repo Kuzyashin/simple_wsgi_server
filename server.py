@@ -5,7 +5,6 @@ from string import Template
 
 
 def index(environ, start_response):
-
     start_response('200 OK', [('Content-Type', 'text/html')])
     with open('./templates/index_page.html') as template_file:
         template = Template(template_file.read())
@@ -36,6 +35,20 @@ def not_found(environ, start_response):
     return [bytes('Not Found', encoding='utf-8')]
 
 
+def serve_static_css(environ, start_response, file):
+    with open('static/{}'.format(file.split('/')[-1]), 'rb') as f:
+        file_data = f.read()
+        start_response('200 OK', [('Content-Type', 'text/css')])
+        return [file_data]
+
+
+def serve_static_img(environ, start_response, file):
+    with open('static/{}'.format(file).split('/')[-1], 'rb') as f:
+        file_data = f.read()
+        start_response('200 OK', [('Content-Type', 'text/image/jpeg')])
+        return [file_data]
+
+
 urls = [
     (r'^$', index),
     (r'name_phone/?$', hello),
@@ -48,6 +61,10 @@ def application(environ, start_response):
         match = re.search(regex, path)
         if match is not None:
             return callback(environ, start_response)
+    if path.lower().endswith('.css'):
+        return serve_static_css(environ, start_response, path)
+    if path.lower().endswith(('.jpg', 'jpeg')):
+        return serve_static_img(environ, start_response, path)
     return not_found(environ, start_response)
 
 
