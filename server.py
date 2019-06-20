@@ -1,6 +1,7 @@
 import re
 from urllib.parse import parse_qs
 from wsgiref.simple_server import make_server
+from html import escape
 from string import Template
 
 
@@ -20,8 +21,8 @@ def hello(environ, start_response):
         request_body_size = 0
     request_body = environ['wsgi.input'].read(request_body_size)
     d = parse_qs(request_body.decode('utf-8'))
-    name = d.get('name', [''])[0]
-    phone = d.get('phone', [''])[0]
+    name = escape(d.get('name', [''])[0])
+    phone = escape(d.get('phone', [''])[0])
     with open('./templates/name_phone.html') as template_file:
         template = Template(template_file.read())
     return [bytes(template.substitute({
